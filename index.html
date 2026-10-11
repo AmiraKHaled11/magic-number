@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Magic Number · Grade 6</title>
+<style>
+:root{--bg1:#140a28;--bg2:#1d1140;--card:rgba(255,255,255,.07);--line:rgba(255,255,255,.17);--txt:#f6f3ff;--mut:#c3b8e6;--gold:#ffc94d;--cyan:#6ee7ff;--green:#3ddc84;--red:#ff6b6b;--violet:#c08cff;--pink:#ff8ad1}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%}
+body{font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;background:radial-gradient(900px 560px at 12% -10%,#4b2a8a 0%,transparent 60%),radial-gradient(760px 480px at 110% 100%,#7a1f63 0%,transparent 55%),linear-gradient(160deg,var(--bg1),var(--bg2));color:var(--txt);padding:14px;padding-top:calc(14px + env(safe-area-inset-top,0px));padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}
+.wrap{max-width:860px;margin:0 auto}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand .logo{width:44px;height:44px;border-radius:13px;background:linear-gradient(135deg,var(--violet),var(--pink));display:grid;place-items:center;font-size:23px;box-shadow:0 6px 18px rgba(192,140,255,.4)}
+.brand h1{font-size:19px;margin:0}.brand small{display:block;color:var(--mut);font-size:11px;font-weight:700;letter-spacing:2px}
+.pill{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;color:var(--mut);font-weight:700}.pill b{color:var(--gold)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;backdrop-filter:blur(8px);box-shadow:0 12px 40px rgba(0,0,0,.3)}
+h2{margin:0 0 6px;font-size:21px}p{line-height:1.5;margin:6px 0}.mut{color:var(--mut)}
+input[type=text],select{width:100%;font:inherit;font-size:17px;padding:11px 14px;border-radius:14px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--txt);outline:none}
+input[type=text]:focus,select:focus{border-color:var(--violet)}select option{color:#000}
+.btn{font:inherit;font-weight:800;font-size:16px;padding:12px 20px;border-radius:14px;border:0;cursor:pointer;color:#1a0f33;background:linear-gradient(135deg,var(--gold),#ffb347);box-shadow:0 8px 20px rgba(255,201,77,.3);transition:transform .1s}
+.btn:active{transform:scale(.97)}.btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--line);box-shadow:none}.btn.small{font-size:14px;padding:8px 14px}.btn:disabled{opacity:.4;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.form{display:grid;gap:10px;grid-template-columns:2fr 1fr auto;align-items:center}
+@media(max-width:600px){.form{grid-template-columns:1fr}}
+.rule{background:rgba(192,140,255,.14);border:1px solid rgba(192,140,255,.5);border-radius:14px;padding:12px 14px;margin:10px 0;font-size:16px;line-height:1.6}
+.rule b{color:var(--gold)}
+.magicbox{display:grid;gap:7px;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));margin-top:10px}
+.mg{border:1px solid var(--line);border-radius:12px;padding:8px;text-align:center;background:rgba(255,255,255,.05);font-weight:800;font-size:15px}
+.mg b{display:block;color:var(--violet);font-size:13px;font-weight:700}
+.stages{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-top:10px}
+.stg{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:rgba(255,255,255,.05);font-size:13px}
+.stg b{display:block;font-size:14px;color:var(--violet)}
+.progress{height:10px;border-radius:999px;background:rgba(0,0,0,.35);overflow:hidden;margin:10px 0 14px}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--violet),var(--pink));transition:width .35s}
+.qhead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.skill{font-size:12px;letter-spacing:2px;font-weight:800;text-transform:uppercase;color:var(--violet)}
+.qtext{font-size:20px;line-height:1.6;margin:10px 0 14px;font-weight:600}
+.big{display:block;font-size:34px;font-weight:900;color:#fff;margin:14px 0;line-height:1.35}
+@media(max-width:600px){.big{font-size:28px}}
+/* stacked fraction */
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.08;margin:0 .14em;font-weight:900}
+.fr i{font-style:normal;border-bottom:2.6px solid currentColor;padding:0 .2em}
+.fr s{text-decoration:none;padding:0 .2em}
+.opts{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.opt{font:inherit;font-size:19px;font-weight:700;padding:14px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.07);color:var(--txt);cursor:pointer;transition:background .15s}
+.opt:hover{background:rgba(255,255,255,.14)}.opt.ok{background:rgba(61,220,132,.25);border-color:var(--green)}.opt.bad{background:rgba(255,107,107,.25);border-color:var(--red)}.opt:disabled{cursor:default}
+.opt.sym{font-size:30px;font-weight:900}
+.twoin{display:grid;gap:12px}
+.twoin .lab{font-size:17px;color:var(--mut);font-weight:700;margin-bottom:4px}
+.twoin input{max-width:220px;font-size:24px;text-align:center;font-weight:800}
+.typein input{max-width:240px;font-size:26px;text-align:center;font-weight:800}
+.hintline{color:var(--mut);font-size:13px;margin-top:6px}
+.feedback{margin-top:14px;padding:14px 16px;border-radius:14px;font-size:16px;line-height:1.6;display:none}
+.feedback.ok{display:block;background:rgba(61,220,132,.15);border:1px solid var(--green)}
+.feedback.bad{display:block;background:rgba(255,107,107,.15);border:1px solid var(--red)}
+.feedback b{color:var(--gold)}
+.hops{display:inline-block;background:rgba(0,0,0,.3);border-radius:8px;padding:2px 8px;font-weight:800;color:var(--cyan)}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line)}th{color:var(--mut);font-size:12px;letter-spacing:1px;text-transform:uppercase}
+.code{display:inline-block;background:rgba(255,201,77,.16);border:1px dashed var(--gold);border-radius:10px;padding:7px 12px;font-weight:900;letter-spacing:1px;color:var(--gold);font-size:17px}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:22px;background:#1a0f33;border:1px solid var(--line);padding:11px 18px;border-radius:999px;display:none;z-index:50;font-weight:700;max-width:92vw;text-align:center}
+.foot{text-align:center;color:var(--mut);font-size:12px;margin-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="brand"><div class="logo">✨</div><div><h1>The Magic Number</h1><small>COMPARE FRACTIONS &amp; DECIMALS</small></div></div>
+  <div class="row">
+    <span class="pill" id="pillWho">Student: <b>—</b></span>
+    <span class="pill" id="pillPts" hidden>Points: <b id="pts">0</b></span>
+    <button class="btn ghost small" id="teacherBtn">Teacher</button>
+  </div>
+</header>
+
+<section class="card" id="login">
+  <h2>Find the magic number ✨</h2>
+  <p class="mut">Grade 6 · Lesson 4-4 revision · comparing <b>fractions with decimals</b>.</p>
+  <div class="rule">
+    The <b>magic number</b> is what you multiply the <b>bottom</b> by to turn it into <b>10, 100 or 1000</b>.<br>
+    Multiply the <b>top by the same magic number</b> — and the fraction becomes a decimal.
+    <div class="magicbox">
+      <div class="mg"><b>bottom 2</b>× 5 → 10</div>
+      <div class="mg"><b>bottom 4</b>× 25 → 100</div>
+      <div class="mg"><b>bottom 5</b>× 2 → 10</div>
+      <div class="mg"><b>bottom 8</b>× 125 → 1000</div>
+      <div class="mg"><b>bottom 20</b>× 5 → 100</div>
+      <div class="mg"><b>bottom 25</b>× 4 → 100</div>
+      <div class="mg"><b>bottom 40</b>× 25 → 1000</div>
+      <div class="mg"><b>bottom 50</b>× 2 → 100</div>
+      <div class="mg"><b>bottom 125</b>× 8 → 1000</div>
+    </div>
+  </div>
+  <div class="stages">
+    <div class="stg"><b>1 · Find it</b>What is the magic number?</div>
+    <div class="stg"><b>2 · Use it</b>Turn the fraction into a decimal</div>
+    <div class="stg"><b>3 · Compare</b>&lt; , &gt; or = ?</div>
+    <div class="stg"><b>4 · Order</b>Least to greatest</div>
+    <div class="stg"><b>5 · Real life</b>Word problems &amp; traps</div>
+  </div>
+  <p class="mut" style="margin-top:12px">15 questions · about 12 minutes · the numbers change every time you play.</p>
+  <div class="form" style="margin-top:12px">
+    <input type="text" id="nameIn" placeholder="Your full name" autocomplete="name">
+    <select id="classIn"><option value="6A">6A</option><option value="6B">6B</option><option value="6C">6C</option></select>
+    <button class="btn" id="go">Start ➜</button>
+  </div>
+  <p class="hintline">Your name is only saved on this device so your teacher can check your code.</p>
+</section>
+
+<section class="card" id="play" hidden>
+  <div class="qhead">
+    <span class="skill" id="skill">—</span>
+    <span class="mut" style="font-size:13px">Question <b id="qno">1</b> / 15 · Stage <b id="stno">1</b>/5</span>
+  </div>
+  <div class="progress"><i id="bar"></i></div>
+  <div class="qtext" id="qtext"></div>
+  <div id="qArea"></div>
+  <div class="feedback" id="fb"></div>
+  <div class="row" style="margin-top:14px">
+    <button class="btn" id="check">Check</button>
+    <button class="btn" id="next" hidden>Next ➜</button>
+    <button class="btn ghost small" id="quit">Quit</button>
+  </div>
+</section>
+
+<section class="card" id="result" hidden>
+  <h2 id="resTitle">Well done</h2>
+  <p id="resLine" class="mut"></p>
+  <div style="font-size:46px;text-align:center;margin:6px 0" id="medal">🏅</div>
+  <p style="text-align:center;font-size:19px;font-weight:800" id="resScore"></p>
+  <p style="text-align:center">Your report code<br><span class="code" id="code">—</span></p>
+  <p class="mut" style="text-align:center;font-size:14px">Send this line to Ms. Amira on WhatsApp.</p>
+  <div class="row" style="justify-content:center;margin-top:8px">
+    <button class="btn" id="copyBtn">Copy my report</button>
+    <button class="btn ghost" id="again">Play again</button>
+  </div>
+  <table id="review"></table>
+</section>
+
+<section class="card" id="teacher" hidden>
+  <div class="row" style="justify-content:space-between"><h2>Teacher logbook</h2><button class="btn ghost small" id="teacherClose">Close</button></div>
+  <div id="pinBox" class="row" style="margin-top:10px">
+    <input type="text" id="pinIn" placeholder="Teacher PIN" style="max-width:200px" inputmode="numeric">
+    <button class="btn small" id="pinGo">Open</button>
+    <span class="mut" style="font-size:13px">Default PIN 2468 — change it in the file (TEACHER_PIN).</span>
+  </div>
+  <div id="teacherBody" hidden>
+    <p class="mut">Attempts saved on <b>this device only</b>. For a girl who played on her own phone, verify her code below.</p>
+    <div class="row"><button class="btn small" id="csv">Copy CSV</button><button class="btn ghost small" id="clearLog">Clear log</button></div>
+    <table id="logTable"></table>
+    <h2 style="margin-top:18px;font-size:18px">Verify a report code</h2>
+    <div class="form">
+      <input type="text" id="vName" placeholder="Student name (exactly as typed)">
+      <select id="vClass"><option value="6A">6A</option><option value="6B">6B</option><option value="6C">6C</option></select>
+      <input type="text" id="vCode" placeholder="MN-13-180-1234">
+      <button class="btn small" id="verify">Check</button>
+    </div>
+    <p id="vOut" style="font-weight:700"></p>
+  </div>
+</section>
+
+<p class="foot">Inspire International Academy · Grade 6 · Lesson 4-4 Rational Numbers · Ms. Amira</p>
+</div>
+<div id="toast"></div>
+
+<script>
+const TEACHER_PIN='2468';
+const NQ=15, PER=3;
+const $=s=>document.querySelector(s);
+const ri=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const pick=a=>a[ri(0,a.length-1)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=ri(0,i);[a[i],a[j]]=[a[j],a[i]]}return a};
+const uniq=a=>a.filter((v,i)=>a.indexOf(v)===i);
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+function toast(t,ms=2200){const el=$('#toast');el.textContent=t;el.style.display='block';clearTimeout(el._t);el._t=setTimeout(()=>el.style.display='none',ms)}
+let audio;function beep(good){try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();const o=audio.createOscillator(),g=audio.createGain();o.connect(g);g.connect(audio.destination);o.frequency.value=good?880:220;g.gain.value=.07;o.start();o.frequency.linearRampToValueAtTime(good?1320:150,audio.currentTime+.15);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+.25);o.stop(audio.currentTime+.26)}catch(e){}}
+let store={};try{store=JSON.parse(localStorage.getItem('magicNumber')||'{}')}catch(e){store={}}
+store.log=store.log||[];
+function save(){try{localStorage.setItem('magicNumber',JSON.stringify(store))}catch(e){}}
+
+/* ---------- magic numbers ---------- */
+// bottom -> [magic number, the power of 10 it makes]
+const MAGIC={2:[5,10],4:[25,100],5:[2,10],8:[125,1000],20:[5,100],25:[4,100],40:[25,1000],50:[2,100],125:[8,1000]};
+// weighted: the friendly bottoms come up often, 40 and 125 are the occasional stretch
+const BOTTOMS=[2,2,2,4,4,4,5,5,5,8,8,8,20,20,25,25,50,50,40,125];
+const NOMAGIC=[3,6,7,9,11,12,15];      // 3 is a factor -> never divides 10, 100 or 1000
+const MINUS='−';
+const FR=(a,b,neg)=>`${neg?MINUS:''}<span class="fr"><i>${a}</i><s>${b}</s></span>`;
+const NEGTXT=v=>String(v).replace('-',MINUS);
+// exact decimal string for a/b using the magic number (b must be in MAGIC)
+function decOf(a,b){
+  const [m,T]=MAGIC[b], num=a*m, k=String(T).length-1;
+  let s='0.'+String(num).padStart(k,'0');
+  s=s.replace(/0+$/,''); if(s.endsWith('.'))s+='0';
+  return s;
+}
+const val=s=>parseFloat(s);
+// a random proper fraction whose bottom has a magic number
+function randFrac(maxB){
+  const bs=BOTTOMS.filter(b=>!maxB||b<=maxB);
+  const b=pick(bs);
+  let a=ri(1,b-1);
+  if(b>=40) a=ri(1,Math.min(b-1,39));     // keep tops small for 40, 50, 125
+  return {a:a,b:b,dec:decOf(a,b),m:MAGIC[b][0],T:MAGIC[b][1]};
+}
+function steps(a,b,neg){
+  const [m,T]=MAGIC[b];
+  return `Magic number for <b>${b}</b> is <b>${m}</b> because ${b} × ${m} = ${T}.<br>${FR(a,b,neg)} = ${FR(a+' × '+m, b+' × '+m,neg)} = ${FR(a*m,T,neg)} = <b>${neg?MINUS:''}${decOf(a,b)}</b>`;
+}
+const cmpSym=(x,y)=>x<y?'<':x>y?'>':'=';
+
+/* ---------- stage generators ---------- */
+// 1 – find the magic number
+function s1(){
+  return pick([
+    ()=>{const f=randFrac();
+      return {skill:'Find the magic number',type:'num',
+        text:`What is the <b>magic number</b> for this fraction?<span class="big">${FR(f.a,f.b)}</span>`,
+        ans:f.m,hint:'Type the number you multiply the bottom by.',
+        why:`The bottom is <b>${f.b}</b>. ${f.b} × <b>${f.m}</b> = ${f.T}, so the magic number is <b>${f.m}</b>.`};},
+    ()=>{const f=randFrac();
+      const opts=uniq([f.m,f.b,f.T/10,f.m*2,10]).filter(v=>v>0).slice(0,4);
+      if(opts.indexOf(f.m)<0)opts[0]=f.m;
+      return {skill:'Find the magic number',type:'mcq',
+        text:`Which magic number turns the bottom of ${FR(f.a,f.b)} into <b>${f.T}</b>?`,
+        opts:shuffle(uniq(opts)).map(String),ans:String(f.m),
+        why:`${f.b} × <b>${f.m}</b> = ${f.T}. Then the top is multiplied by ${f.m} too.`};},
+    ()=>{const bad=pick(NOMAGIC), g1=randFrac(), g2=randFrac();
+      const badFrac={a:ri(1,bad-1),b:bad};
+      const opts=shuffle(uniq([`${badFrac.a}/${badFrac.b}`,`${g1.a}/${g1.b}`,`${g2.a}/${g2.b}`,`1/${pick([2,4,5,8])}`]));
+      return {skill:'No magic number',type:'mcq',
+        text:'Which fraction has <b>NO</b> magic number? (Its bottom can never become 10, 100 or 1000.)',
+        opts:opts.map(o=>{const p=o.split('/');return p[0]+' / '+p[1]}),ans:badFrac.a+' / '+badFrac.b,
+        why:`<b>${bad}</b> does not divide 10, 100 or 1000, so there is no magic number. For ${FR(badFrac.a,badFrac.b)} you must <b>divide</b> ${badFrac.a} ÷ ${bad} instead — and the decimal repeats.`};}
+  ])();
+}
+// 2 – use it: fraction -> decimal
+function s2(){
+  const f=randFrac();
+  return {skill:'Fraction → decimal',type:'two',
+    text:`Change this fraction into a decimal.<span class="big">${FR(f.a,f.b)}</span>`,
+    lab1:'Magic number',lab2:'The decimal',ans1:f.m,ans2:f.dec,
+    why:steps(f.a,f.b)};
+}
+// 3 – compare a fraction with a decimal
+function s3(){
+  const f=randFrac();
+  const neg=ri(0,1)===1;
+  const d=val(f.dec);
+  // decimal to compare with: equal, a bit more, or a bit less
+  const mode=ri(0,3);
+  let other;
+  if(mode===0) other=f.dec;                                  // equal
+  else{
+    const step=pick([0.01,0.02,0.05,0.1]);
+    other=(mode===1? d+step : d-step);
+    other=Math.round(other*1000)/1000;
+    if(other<=0||other>=1) other=Math.round((d+ (d<0.5?step:-step))*1000)/1000;
+    other=String(other);
+  }
+  const fv=neg?-d:d, ov=neg?-val(other):val(other);
+  const sym=cmpSym(fv,ov);
+  const shownOther=(neg?MINUS:'')+other;
+  return {skill:'Compare',type:'mcq',sym:true,
+    text:`Fill in the circle.<span class="big">${FR(f.a,f.b,neg)} &nbsp;◯&nbsp; ${shownOther}</span>`,
+    opts:['<','>','='],ans:sym,
+    why:`${steps(f.a,f.b,neg)}<br>Now compare <b>${(neg?MINUS:'')+f.dec}</b> with <b>${shownOther}</b>: the answer is <b>${sym}</b>.`+
+        (neg?' Remember: with negatives, the number further <b>left</b> is smaller.':'')};
+}
+// 4 – order three numbers
+function s4(){
+  const neg=ri(0,2)===0;
+  const f1=randFrac(), f2=randFrac();
+  let d3=String(Math.round(ri(5,95))/100);
+  const items=[
+    {html:FR(f1.a,f1.b,neg),txt:(neg?MINUS:'')+f1.a+'/'+f1.b,v:(neg?-1:1)*val(f1.dec)},
+    {html:FR(f2.a,f2.b,neg),txt:(neg?MINUS:'')+f2.a+'/'+f2.b,v:(neg?-1:1)*val(f2.dec)},
+    {html:(neg?MINUS:'')+d3,txt:(neg?MINUS:'')+d3,v:(neg?-1:1)*val(d3)}
+  ];
+  // need three different values
+  const vs=items.map(i=>i.v);
+  if(uniq(vs.map(v=>v.toFixed(6))).length<3) return s4();
+  const asc=items.slice().sort((x,y)=>x.v-y.v);
+  const key=a=>a.map(i=>i.txt).join(' , ');
+  const cands=[asc,asc.slice().reverse(),[items[0],items[2],items[1]],[items[2],items[0],items[1]],[items[1],items[0],items[2]]];
+  const opts=uniq(cands.map(key)).filter((o,i,arr)=>i===0||o!==key(asc)).slice(0,4);
+  if(opts.indexOf(key(asc))<0)opts.push(key(asc));
+  return {skill:'Order least to greatest',type:'mcq',
+    text:`Put these in order from <b>least to greatest</b>.<span class="big">${items.map(i=>i.html).join(' &nbsp;,&nbsp; ')}</span>`,
+    opts:shuffle(uniq(opts)),ans:key(asc),
+    why:`As decimals: ${items.map(i=>`${i.txt} = <b>${(i.v<0?MINUS:'')+Math.abs(i.v)}</b>`).join(', ')}.<br>Least to greatest: <b>${key(asc)}</b>.`+
+        (neg?' With negatives the one furthest from 0 comes first.':'')};
+}
+// 5 – real life and traps
+const NAMES=['Sara','Lina','Noor','Maya','Aisha','Hana','Reem','Jana'];
+function s5(){
+  return pick([
+    ()=>{ // who did more
+      const f=randFrac(); let d=Math.round((val(f.dec)+pick([0.05,0.1,-0.05,-0.1]))*100)/100;
+      if(d<=0||d>=1||d===val(f.dec)) d=Math.round((val(f.dec)+0.1)*100)/100;
+      const n1=pick(NAMES); let n2=pick(NAMES); while(n2===n1)n2=pick(NAMES);
+      const thing=pick([{t:'of a litre of water',u:'litre'},{t:'of a chocolate bar',u:'bar'},{t:'of the homework',u:'homework'}]);
+      const more=val(f.dec)>d?n1:n2;
+      return {skill:'Real life',type:'mcq',
+        text:`${n1} finished ${FR(f.a,f.b)} ${thing.t}. ${n2} finished ${d} ${thing.t}.<br>Who finished <b>more</b>?`,
+        opts:shuffle([n1,n2]),ans:more,
+        why:`${steps(f.a,f.b)}<br>${f.dec} compared with ${d}: <b>${more}</b> finished more.`};},
+    ()=>{ // which equals this decimal
+      const f=randFrac(); const d=f.dec;
+      const wrongs=[];
+      while(wrongs.length<3){const w=randFrac(); if(w.dec!==d&&!wrongs.some(x=>x.a===w.a&&x.b===w.b))wrongs.push(w)}
+      const all=shuffle([f].concat(wrongs));
+      return {skill:'Which one equals it?',type:'mcq',
+        text:`Which fraction is equal to <b>${d}</b>?`,
+        opts:all.map(x=>x.a+' / '+x.b),ans:f.a+' / '+f.b,
+        why:`${steps(f.a,f.b)}<br>The others give ${wrongs.map(w=>`${w.a}/${w.b} = ${w.dec}`).join(', ')}.`};},
+    ()=>{ // spot the mistake
+      const f=randFrac(); const n=pick(NAMES);
+      const d=Math.round((val(f.dec)+pick([0.1,0.2,-0.1,-0.2]))*100)/100;
+      if(d<=0||d>=1) return s5();
+      const claim=pick(['>','<']);
+      const truth=cmpSym(val(f.dec),d);
+      const right=(claim===truth);
+      return {skill:'Spot the mistake',type:'mcq',
+        text:`${n} says:<span class="big">${FR(f.a,f.b)} ${claim} ${d}</span>Is she right?`,
+        opts:['Yes','No'],ans:right?'Yes':'No',
+        why:`${steps(f.a,f.b)}<br>So the true statement is <b>${f.dec} ${truth} ${d}</b> — ${n} is <b>${right?'right ✔':'wrong ✘'}</b>. Never compare the top of a fraction with a decimal: change it first.`};}
+  ])();
+}
+const STAGES=[
+  {n:'Find the magic number',g:s1},{n:'Fraction → decimal',g:s2},
+  {n:'Compare',g:s3},{n:'Order',g:s4},{n:'Real life',g:s5}
+];
+
+/* ---------- play ---------- */
+let user=null,qs=[],qi=0,pts=0,streak=0,log=[],cur=null,t0=0;
+function login(){
+  const n=$('#nameIn').value.trim();
+  if(n.length<2){toast('Please type your name');return}
+  user={name:n,class:$('#classIn').value};
+  store.last=user;save();
+  $('#pillWho').innerHTML='Student: <b>'+esc(n)+'</b>';
+  $('#pillPts').hidden=false;start();
+}
+function start(){
+  qs=[];
+  for(let s=0;s<STAGES.length;s++){
+    const seen=new Set();
+    for(let k=0;k<PER;k++){
+      let q,guard=0;
+      do{q=STAGES[s].g();guard++}while(seen.has(q.text)&&guard<25);
+      seen.add(q.text);q.stage=s;qs.push(q);
+    }
+  }
+  qi=0;pts=0;streak=0;log=[];t0=Date.now();
+  $('#login').hidden=true;$('#result').hidden=true;$('#teacher').hidden=true;$('#play').hidden=false;
+  $('#pts').textContent='0';showQ();
+}
+function showQ(){
+  cur=qs[qi];
+  $('#skill').textContent=cur.skill;
+  $('#qno').textContent=qi+1;$('#stno').textContent=cur.stage+1;
+  $('#bar').style.width=(qi/NQ*100)+'%';
+  $('#qtext').innerHTML=cur.text;
+  const area=$('#qArea');area.innerHTML='';
+  $('#fb').className='feedback';$('#fb').innerHTML='';
+  $('#check').hidden=false;$('#next').hidden=true;
+  if(cur.type==='mcq'){
+    const d=document.createElement('div');d.className='opts';
+    cur.opts.forEach(o=>{const b=document.createElement('button');b.className='opt'+(cur.sym?' sym':'');b.type='button';b.textContent=o;b.onclick=()=>judge(o===cur.ans,b);d.appendChild(b)});
+    area.appendChild(d);$('#check').hidden=true;
+  } else if(cur.type==='two'){
+    area.innerHTML=`<div class="twoin"><div><div class="lab">${cur.lab1}</div><input type="text" id="in1" inputmode="numeric" placeholder="?" autocomplete="off"></div>`+
+      `<div><div class="lab">${cur.lab2}</div><input type="text" id="in2" inputmode="decimal" placeholder="0.???" autocomplete="off"></div></div>`+
+      `<div class="hintline">Multiply the top by the magic number too.</div>`;
+    setTimeout(()=>$('#in1')&&$('#in1').focus(),80);
+  } else {
+    area.innerHTML=`<div class="typein"><input type="text" id="inT" inputmode="decimal" placeholder="?" autocomplete="off"></div><div class="hintline">${cur.hint||''}</div>`;
+    setTimeout(()=>$('#inT')&&$('#inT').focus(),80);
+  }
+}
+const normNum=s=>String(s).replace(/[\s,  ]/g,'').replace(/−/g,'-').replace(/^\+/,'');
+function doCheck(){
+  if(cur.type==='two'){
+    const a=normNum($('#in1').value), b=normNum($('#in2').value);
+    if(a===''||b===''){toast('Fill in both boxes');return}
+    const av=parseFloat(a), bv=parseFloat(b);
+    if(isNaN(av)||isNaN(bv)){toast('Numbers only, please');return}
+    judge(av===cur.ans1 && Math.abs(bv-val(cur.ans2))<1e-9);
+  } else {
+    const v=normNum($('#inT').value);
+    if(v===''){toast('Type your answer');return}
+    judge(Math.abs(parseFloat(v)-cur.ans)<1e-9);
+  }
+}
+function judge(ok,btn){
+  const fb=$('#fb');
+  const answer=cur.type==='two'?`magic number ${cur.ans1}, decimal ${cur.ans2}`:(cur.type==='mcq'?cur.ans:cur.ans);
+  if(ok){streak++;const p=10+(streak>=5?5:streak>=3?3:0);pts+=p;
+    fb.className='feedback ok';fb.innerHTML=`✅ <b>Correct! +${p}</b>${streak>=3?` 🔥 ${streak} in a row`:''}<br>${cur.why}`;beep(true)}
+  else{streak=0;fb.className='feedback bad';
+    fb.innerHTML=`❌ <b>Not yet.</b> Answer: <b>${esc(String(answer))}</b><br>${cur.why}`;beep(false)}
+  if(btn){btn.classList.add(ok?'ok':'bad');
+    if(!ok)$('#qArea').querySelectorAll('.opt').forEach(b=>{if(b.textContent===String(cur.ans))b.classList.add('ok')})}
+  $('#qArea').querySelectorAll('button,input').forEach(b=>b.disabled=true);
+  log.push({skill:cur.skill,ok:ok});
+  $('#pts').textContent=pts;$('#check').hidden=true;$('#next').hidden=false;$('#next').focus();
+}
+function nextQ(){ if(qi<NQ-1){qi++;showQ()} else finish() }
+function codeOf(name,cls,correct,p){let h=0;const s=`${name.toLowerCase().replace(/\s+/g,' ').trim()}|${cls.toUpperCase()}|${correct}|${p}`;
+  for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return `MN-${correct}-${p}-${h%9000+1000}`}
+function finish(){
+  $('#bar').style.width='100%';
+  const correct=log.filter(l=>l.ok).length;
+  const secs=Math.round((Date.now()-t0)/1000);
+  const cd=codeOf(user.name,user.class,correct,pts);
+  const missed=uniq(log.filter(l=>!l.ok).map(l=>l.skill));
+  store.log.push({name:user.name,cls:user.class,correct:correct,total:NQ,pts:pts,secs:secs,
+    date:new Date().toISOString().slice(0,16).replace('T',' '),code:cd,missed:missed.join('; ')});save();
+  $('#play').hidden=true;$('#result').hidden=false;
+  const pc=correct/NQ;
+  $('#medal').textContent=pc===1?'🏆':pc>=.8?'🏅':pc>=.6?'🥈':'✨';
+  $('#resTitle').textContent=pc>=.8?`${user.name}, you found the magic! ✨`:pc>=.6?`${user.name}, nearly there — try again?`:`${user.name}, let's practise once more`;
+  $('#resLine').textContent=`Comparing fractions and decimals · ${user.class} · ${Math.floor(secs/60)}m ${secs%60}s`;
+  $('#resScore').textContent=`${correct} / ${NQ} correct · ${pts} points`;
+  $('#code').textContent=cd;
+  const byStage=STAGES.map((s,i)=>{const L=log.slice(i*PER,i*PER+PER);return {n:s.n,c:L.filter(l=>l.ok).length}});
+  $('#review').innerHTML=`<tr><th>Stage</th><th>Score</th></tr>`+
+    byStage.map(b=>`<tr><td>${esc(b.n)}</td><td>${b.c}/${PER} ${b.c===PER?'✅':b.c===0?'❌':'⚠️'}</td></tr>`).join('')+
+    `<tr><td colspan="2" class="mut">${missed.length?'Revise: '+missed.join(' · '):'Perfect — nothing to revise! 🎉'}</td></tr>`;
+  $('#copyBtn').onclick=()=>{const t=`The Magic Number | ${user.class} | ${user.name} | ${correct}/${NQ} | ${pts} pts | ${cd}`;
+    (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('Copied — send it to Ms. Amira')).catch(()=>toast(t,7000))};
+  if(pc>=.8)setTimeout(()=>beep(true),200);
+}
+/* ---------- teacher ---------- */
+function openTeacher(){$('#teacher').hidden=false;$('#login').hidden=true;$('#play').hidden=true;$('#result').hidden=true;$('#teacherBody').hidden=true;$('#pinBox').hidden=false}
+function renderLog(){const rows=store.log.slice().reverse();
+  $('#logTable').innerHTML=`<tr><th>Date</th><th>Class</th><th>Name</th><th>Score</th><th>Pts</th><th>Time</th><th>Missed</th><th>Code</th></tr>`+
+  (rows.length?rows.map(r=>`<tr><td>${r.date}</td><td>${esc(r.cls)}</td><td>${esc(r.name)}</td><td>${r.correct}/${r.total}</td><td>${r.pts}</td><td>${Math.floor(r.secs/60)}:${String(r.secs%60).padStart(2,'0')}</td><td class="mut">${esc(r.missed||'—')}</td><td><span class="code" style="font-size:12px;padding:2px 6px">${r.code}</span></td></tr>`).join(''):'<tr><td colspan="8" class="mut">No attempts on this device yet.</td></tr>')}
+$('#teacherBtn').onclick=openTeacher;
+$('#teacherClose').onclick=()=>{$('#teacher').hidden=true;$('#login').hidden=false};
+$('#pinGo').onclick=()=>{if($('#pinIn').value.trim()===TEACHER_PIN){$('#pinBox').hidden=true;$('#teacherBody').hidden=false;renderLog()}else toast('Wrong PIN')};
+$('#pinIn').addEventListener('keydown',e=>{if(e.key==='Enter')$('#pinGo').click()});
+$('#verify').onclick=()=>{
+  const n=$('#vName').value,c=$('#vClass').value,cd=$('#vCode').value.trim().toUpperCase();
+  const m=cd.match(/^MN-(\d+)-(\d+)-(\d{4})$/);
+  if(!m){$('#vOut').textContent='Code format should be MN-correct-points-check';return}
+  const ok=codeOf(n,c,+m[1],+m[2])===cd;
+  $('#vOut').innerHTML=ok?`✅ Valid: <b>${esc(n)}</b> (${esc(c)}) — ${m[1]}/${NQ} correct, ${m[2]} points`:'❌ Does not match this name and class — check the spelling (exactly as she typed it) and the class.'};
+$('#csv').onclick=()=>{const head='date,class,name,correct,total,points,seconds,missed,code';
+  const body=store.log.map(r=>[r.date,r.cls,r.name,r.correct,r.total,r.pts,r.secs,(r.missed||'').replace(/,/g,';'),r.code].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  (navigator.clipboard?navigator.clipboard.writeText(head+'\n'+body):Promise.reject()).then(()=>toast('CSV copied — paste into Excel')).catch(()=>toast('Copy failed'))};
+$('#clearLog').onclick=()=>{if(confirm('Delete all attempts stored on this device?')){store.log=[];save();renderLog()}};
+/* ---------- wiring ---------- */
+$('#go').onclick=login;
+$('#nameIn').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
+$('#check').onclick=doCheck;$('#next').onclick=nextQ;
+$('#quit').onclick=()=>{$('#play').hidden=true;$('#login').hidden=false};
+$('#again').onclick=()=>start();
+document.addEventListener('keydown',e=>{if(e.key!=='Enter')return;
+  if(!$('#play').hidden){ if(!$('#next').hidden)nextQ(); else if(!$('#check').hidden)doCheck() }});
+if(store.last){$('#nameIn').value=store.last.name;$('#classIn').value=store.last.class||'6A'}
+</script>
+</body>
+</html>

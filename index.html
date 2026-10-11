@@ -43,6 +43,7 @@ input[type=text]:focus,select:focus{border-color:var(--violet)}select option{col
 .fr i{font-style:normal;border-bottom:2.6px solid currentColor;padding:0 .2em}
 .fr s{text-decoration:none;padding:0 .2em}
 .opts{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.opts.wide{grid-template-columns:1fr}
 .opt{font:inherit;font-size:19px;font-weight:700;padding:14px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.07);color:var(--txt);cursor:pointer;transition:background .15s}
 .opt:hover{background:rgba(255,255,255,.14)}.opt.ok{background:rgba(61,220,132,.25);border-color:var(--green)}.opt.bad{background:rgba(255,107,107,.25);border-color:var(--red)}.opt:disabled{cursor:default}
 .opt.sym{font-size:30px;font-weight:900}
@@ -228,10 +229,11 @@ function s1(){
         why:`${f.b} × <b>${f.m}</b> = ${f.T}. Then the top is multiplied by ${f.m} too.`};},
     ()=>{const bad=pick(NOMAGIC), g1=randFrac(), g2=randFrac();
       const badFrac={a:ri(1,bad-1),b:bad};
-      const opts=shuffle(uniq([`${badFrac.a}/${badFrac.b}`,`${g1.a}/${g1.b}`,`${g2.a}/${g2.b}`,`1/${pick([2,4,5,8])}`]));
+      const g3b=pick([2,4,5,8]);
+      const opts=uniq([FR(badFrac.a,badFrac.b),FR(g1.a,g1.b),FR(g2.a,g2.b),FR(1,g3b)]);
       return {skill:'No magic number',type:'mcq',
         text:'Which fraction has <b>NO</b> magic number? (Its bottom can never become 10, 100 or 1000.)',
-        opts:opts.map(o=>{const p=o.split('/');return p[0]+' / '+p[1]}),ans:badFrac.a+' / '+badFrac.b,
+        opts:shuffle(opts),ans:FR(badFrac.a,badFrac.b),
         why:`<b>${bad}</b> does not divide 10, 100 or 1000, so there is no magic number. For ${FR(badFrac.a,badFrac.b)} you must <b>divide</b> ${badFrac.a} ÷ ${bad} instead — and the decimal repeats.`};}
   ])();
 }
@@ -282,14 +284,14 @@ function s4(){
   const vs=items.map(i=>i.v);
   if(uniq(vs.map(v=>v.toFixed(6))).length<3) return s4();
   const asc=items.slice().sort((x,y)=>x.v-y.v);
-  const key=a=>a.map(i=>i.txt).join(' , ');
+  const key=a=>a.map(i=>i.html).join(' &nbsp;,&nbsp; ');
   const cands=[asc,asc.slice().reverse(),[items[0],items[2],items[1]],[items[2],items[0],items[1]],[items[1],items[0],items[2]]];
   const opts=uniq(cands.map(key)).filter((o,i,arr)=>i===0||o!==key(asc)).slice(0,4);
   if(opts.indexOf(key(asc))<0)opts.push(key(asc));
-  return {skill:'Order least to greatest',type:'mcq',
+  return {skill:'Order least to greatest',type:'mcq',wide:true,
     text:`Put these in order from <b>least to greatest</b>.<span class="big">${items.map(i=>i.html).join(' &nbsp;,&nbsp; ')}</span>`,
     opts:shuffle(uniq(opts)),ans:key(asc),
-    why:`As decimals: ${items.map(i=>`${i.txt} = <b>${(i.v<0?MINUS:'')+Math.abs(i.v)}</b>`).join(', ')}.<br>Least to greatest: <b>${key(asc)}</b>.`+
+    why:`As decimals: ${items.map(i=>`${i.html} = <b>${(i.v<0?MINUS:'')+Math.abs(i.v)}</b>`).join(', ')}.<br>Least to greatest: <b>${key(asc)}</b>.`+
         (neg?' With negatives the one furthest from 0 comes first.':'')};
 }
 // 5 – real life and traps
@@ -313,8 +315,8 @@ function s5(){
       const all=shuffle([f].concat(wrongs));
       return {skill:'Which one equals it?',type:'mcq',
         text:`Which fraction is equal to <b>${d}</b>?`,
-        opts:all.map(x=>x.a+' / '+x.b),ans:f.a+' / '+f.b,
-        why:`${steps(f.a,f.b)}<br>The others give ${wrongs.map(w=>`${w.a}/${w.b} = ${w.dec}`).join(', ')}.`};},
+        opts:all.map(x=>FR(x.a,x.b)),ans:FR(f.a,f.b),
+        why:`${steps(f.a,f.b)}<br>The others give ${wrongs.map(w=>`${FR(w.a,w.b)} = ${w.dec}`).join(', ')}.`};},
     ()=>{ // spot the mistake
       const f=randFrac(); const n=pick(NAMES);
       const d=Math.round((val(f.dec)+pick([0.1,0.2,-0.1,-0.2]))*100)/100;
@@ -367,8 +369,9 @@ function showQ(){
   $('#fb').className='feedback';$('#fb').innerHTML='';
   $('#check').hidden=false;$('#next').hidden=true;
   if(cur.type==='mcq'){
-    const d=document.createElement('div');d.className='opts';
-    cur.opts.forEach(o=>{const b=document.createElement('button');b.className='opt'+(cur.sym?' sym':'');b.type='button';b.textContent=o;b.onclick=()=>judge(o===cur.ans,b);d.appendChild(b)});
+    const d=document.createElement('div');d.className='opts'+(cur.wide?' wide':'');
+    cur.opts.forEach(o=>{const b=document.createElement('button');b.className='opt'+(cur.sym?' sym':'');b.type='button';
+      b.innerHTML=o;b.dataset.k=o;b.onclick=()=>judge(o===cur.ans,b);d.appendChild(b)});
     area.appendChild(d);$('#check').hidden=true;
   } else if(cur.type==='two'){
     area.innerHTML=`<div class="twoin"><div><div class="lab">${cur.lab1}</div><input type="text" id="in1" inputmode="numeric" placeholder="?" autocomplete="off"></div>`+
@@ -402,7 +405,7 @@ function judge(ok,btn){
   else{streak=0;fb.className='feedback bad';
     fb.innerHTML=`❌ <b>Not yet.</b> Answer: <b>${esc(String(answer))}</b><br>${cur.why}`;beep(false)}
   if(btn){btn.classList.add(ok?'ok':'bad');
-    if(!ok)$('#qArea').querySelectorAll('.opt').forEach(b=>{if(b.textContent===String(cur.ans))b.classList.add('ok')})}
+    if(!ok)$('#qArea').querySelectorAll('.opt').forEach(b=>{if(b.dataset.k===String(cur.ans))b.classList.add('ok')})}
   $('#qArea').querySelectorAll('button,input').forEach(b=>b.disabled=true);
   log.push({skill:cur.skill,ok:ok});
   $('#pts').textContent=pts;$('#check').hidden=true;$('#next').hidden=false;$('#next').focus();
